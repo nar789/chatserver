@@ -10,11 +10,11 @@ const io = require('socket.io')(server,{
 });
 const mysql = require('mysql2'); 
 const pool = mysql.createPool({
-    host : 'localhost',
+    host : '127.0.0.1',
     user : 'root',
     password : 'black',
     database : 'chat',
-    port:3306
+    port : 3306
 });
 
 
@@ -44,7 +44,7 @@ io.on('connection', async socket =>{
         const conn = pool.promise();
         let messageId = 0;
         try {
-            const [result,fields] = await conn.query(`INSERT INTO message VALUES(null, ${conversationId}, ${userId}, ${messageType}, '${message}', from_unixtime(${updated}), ${image == null ? null : "'" + image + "'"}, '${name}')`);
+            const [result,fields] = await conn.query(`INSERT INTO message VALUES(null, ${conversationId}, '${userId}', ${messageType}, '${message}', from_unixtime(${updated}), ${image == null ? null : "'" + image + "'"}, '${name}')`);
             messageId = result.insertId; 
             await conn.query(`UPDATE conversation SET last_message_id = ${messageId} WHERE id=${conversationId}`);
         } catch(err) {
@@ -76,7 +76,7 @@ io.on('connection', async socket =>{
             }
         }
         try{
-            await conn.query(`INSERT INTO read_info VALUES(null, ${conversationId}, ${userId}, ${lastMessageId})`);
+            await conn.query(`INSERT INTO read_info VALUES(null, ${conversationId}, '${userId}', ${lastMessageId})`);
         }catch(err){
             console.log(err);
         }
@@ -151,8 +151,8 @@ io.on('connection', async socket =>{
                     title = title.split("," + name).join("");
                 }
                 await conn.query(`UPDATE conversation SET user_count = ${userCount}, title='${title}' WHERE id=${conversationId}`);
-                await conn.query(`DELETE FROM user_conversation WHERE user_id = ${userId} AND conversation_id = ${conversationId}`);
-                await conn.query(`INSERT INTO message VALUES(null, ${conversationId}, ${userId}, 3, '', current_timestamp(), null, '${name}')`);
+                await conn.query(`DELETE FROM user_conversation WHERE user_id = '${userId}' AND conversation_id = ${conversationId}`);
+                await conn.query(`INSERT INTO message VALUES(null, ${conversationId}, '${userId}', 3, '', current_timestamp(), null, '${name}')`);
 
                 io.sockets.to(conversationId).emit('message', ({
                     conversationId : conversationId,
@@ -187,7 +187,7 @@ async function getUnreadCountForConversation(convId, userId) {
 
     const conn = pool.promise();
     try{
-        const [rows,fields] = await conn.query(`SELECT MAX(last_message_id) AS last_message_id FROM read_info WHERE user_id=${userId} AND conversation_id=${convId}`);
+        const [rows,fields] = await conn.query(`SELECT MAX(last_message_id) AS last_message_id FROM read_info WHERE user_id='${userId}' AND conversation_id=${convId}`);
         const lastMessageId = rows[0].last_message_id;
         const [rows2,fields2] = await conn.query(`SELECT COUNT(*) as unreads FROM message WHERE id > ${lastMessageId} AND conversation_id = ${convId} AND message_type != 3`);
         return rows2[0].unreads;
@@ -203,7 +203,7 @@ async function loadConversation(socket, userId) {
     console.log('loadConversation');
     const conn = pool.promise();
     try{
-        const [rows,fields] = await conn.query(`SELECT * FROM conversation WHERE id IN (select conversation_id from user_conversation where user_id = ${userId})`);
+        const [rows,fields] = await conn.query(`SELECT * FROM conversation WHERE id IN (select conversation_id from user_conversation where user_id = '${userId}')`);
         
         for(let row of rows) {
             const [rows2,fields2] = await conn.query(`SELECT message_type, message, unix_timestamp(updated) as updated FROM message WHERE id=${row.last_message_id}`);
@@ -257,7 +257,7 @@ async function createConversation(socket, info) {
         convId = rows.insertId;
         console.log("createConversation::convId = " + convId)
         for(var user of users) {
-            await conn.query(`INSERT user_conversation VALUES(null, ${user.id}, ${convId}, false, true)`);
+            await conn.query(`INSERT user_conversation VALUES(null, '${user.id}', ${convId}, false, true)`);
         }
         console.log('createConversation::success');
     } catch(err) {

@@ -32,12 +32,12 @@ function Conversation(id, thumb, title, unreads, userCount, lastMessageId) {
 
 let info = [
   {
-    id : 1,
+    id : 'TE_S_T1f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599',
     name : "아이유",
     profile : "iu.PNG"
   },
   {
-    id : 2,
+    id : 'TE_S_T2f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599',
     name : "유인나",
     profile : "ui.PNG"
   }
@@ -46,10 +46,10 @@ let info = [
 let lastUpdated = [];
 let copyMsg = [];
 let copyConvItem;
-let myId = 1; 
+let myId = 'TE_S_T1f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599'; 
 
 function App() {
-  let [select, setSelect] = useState(new User(1, "아이유"));
+  let [select, setSelect] = useState(new User('TE_S_T1f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599', "아이유"));
   let [chatList, setChatList] = useState([]);
   let [convItem, setConvItem] = useState(new Conversation(0, "", "", 0, 0));
   let [msg, setMsg] = useState([]);
@@ -70,8 +70,8 @@ function App() {
 
         </div>
         <p>UsersList</p>
-          <button onClick={()=>changeUser(1, "아이유")}>아이유</button>
-          <button onClick={()=>changeUser(2, "유인나")}>유인나</button>
+          <button onClick={()=>changeUser('TE_S_T1f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599', "아이유")}>아이유</button>
+          <button onClick={()=>changeUser('TE_S_T2f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599', "유인나")}>유인나</button>
       </div>
       
       <br></br>
