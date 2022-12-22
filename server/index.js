@@ -13,7 +13,8 @@ const pool = mysql.createPool({
     host : 'localhost',
     user : 'root',
     password : 'black',
-    database : 'chat'
+    database : 'chat',
+    port:3306
 });
 
 
@@ -203,9 +204,18 @@ async function loadConversation(socket, userId) {
     const conn = pool.promise();
     try{
         const [rows,fields] = await conn.query(`SELECT * FROM conversation WHERE id IN (select conversation_id from user_conversation where user_id = ${userId})`);
+        
         for(let row of rows) {
+            const [rows2,fields2] = await conn.query(`SELECT message_type, message, unix_timestamp(updated) as updated FROM message WHERE id=${row.last_message_id}`);
             row.unreads = await getUnreadCountForConversation(row.id, userId);
             row.userId = userId;
+
+            if(rows2 != null && rows2.length > 0) {
+                row.messageType = rows2[0].message_type;
+                row.message = rows2[0].message;
+                row.updated = rows2[0].updated;
+            }
+            
         }
         const data = JSON.stringify(rows);
         socket.emit('loadConversation', ({
