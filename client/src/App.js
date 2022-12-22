@@ -3,7 +3,9 @@ import { io } from 'socket.io-client';
 import './App.css';
 
 
-const socket = io.connect('http://localhost:1225')
+const socket = io.connect('http://localhost:1225');
+//const socket = io.connect('http://nar005.cafe24.com:1225')
+
 
 function User(id, name) {
   this.id = id;
