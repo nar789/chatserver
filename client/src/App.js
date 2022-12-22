@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import './App.css';
 
@@ -116,7 +116,7 @@ function App() {
         <hr />
         <br></br>&nbsp;&nbsp;<input type="file" onChange={uploadImage.bind(this)} />
         <br></br>
-        <button onClick={()=>setImgPath('')}>이미지 선택 취소</button>
+        <button onClick={()=>setImgPath()}>이미지 선택 취소</button>
         <img src={"/img/" + imgPath} alt='preview' width={50} />
         <br></br><br></br>
         <center><button style={{display : `${imgPath === "" ? 'none': 'block'}`}} onClick={()=>sendImage()}>이미지 전송</button></center>
