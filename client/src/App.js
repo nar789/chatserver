@@ -171,6 +171,7 @@ function App() {
   function uploadImage(event) {
     const files = event.target.files;
     console.log(files[0].name);
+    console.log(files[0]);
     socket.emit('uploadImage', ({file : files[0], name : files[0].name}));
   }
 
