@@ -172,7 +172,7 @@ io.on('connection', async socket =>{
 
     socket.on('uploadImage', ({file, name}) => {
         console.log('uploadImage ' + name);
-        let path = "../client/public/img/";
+        let path = "../client/build/img/";
         let filename = Date.now() + name;
         writeFileSync(path + filename, file);
         socket.emit('uploadImage', ({
