@@ -297,8 +297,8 @@ function App() {
       console.log('welcome~~!');
     });
 
-    socket.on('createConversation',({result})=>{
-      alert(result);
+    socket.on('createConversation',({result, conversationId})=>{
+      alert(result + ", conversation id = " + conversationId);
     });
 
     socket.on('loadConversation', ({data, result}) => {

@@ -266,7 +266,7 @@ async function createConversation(socket, info) {
         return;
     }
 
-    socket.emit('createConversation',({result:"success"}) );
+    socket.emit('createConversation',({result:"success", conversationId : convId}) );
     
     
 }
