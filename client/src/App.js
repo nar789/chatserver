@@ -33,13 +33,13 @@ function Conversation(id, thumb, title, unreads, userCount, lastMessageId) {
 let info = [
   {
     id : 'TE_S_T1f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599',
-    name : "아이유",
-    profile : "iu.PNG"
+    userNick : "아이유",
+    userPhoto : "iu.PNG"
   },
   {
     id : 'TE_S_T2f581853e2311eda70aed9abcc3661d_2022_09_27_14_18_33_599',
-    name : "유인나",
-    profile : "ui.PNG"
+    userNick : "유인나",
+    userPhoto : "ui.PNG"
   }
 ];
 
