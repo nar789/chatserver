@@ -238,16 +238,16 @@ async function createConversation(socket, info) {
         console.log('createConversation::user count = 0');
         return;
     }
-    let name = users[0].name;
-    let thumbnail = users[0].profile;
+    let name = users[0].userNick;
+    let thumbnail = users[0].userPhoto;
     if(users.length >= 2) {
-        thumbnail = users[1].profile;
+        thumbnail = users[1].userPhoto;
     }
     for(var user of users) {
-        if(name === user.name) {
+        if(name === user.userNick) {
             continue;
         }
-        name = name + "," + user.name;
+        name = name + "," + user.userNick;
     }
 
     let convId = 0;
