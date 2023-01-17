@@ -6,7 +6,8 @@ const io = require('socket.io')(server,{
     cors : {
         origin :"*",
         credentials :true
-    }
+    },
+    allowEIO3: true
 });
 const mysql = require('mysql2'); 
 const pool = mysql.createPool({
