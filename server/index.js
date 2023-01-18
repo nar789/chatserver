@@ -102,7 +102,7 @@ io.on('connection', async socket =>{
     socket.on('loadmessage', async ({conversationId, offset, size}) => {
         const conn = pool.promise();
         try {
-            const [rows, fields] = await conn.query(`SELECT * FROM (SELECT id,conversation_id,user_id,message_type,message,unix_timestamp(updated) as updated,image,name FROM message WHERE conversation_id=${conversationId} order by id desc) orders limit ${size} offset ${offset}`);
+            const [rows, fields] = await conn.query(`SELECT * FROM (SELECT id,conversation_id,user_id,message_type,message,unix_timestamp(updated) as updated,image,name FROM message WHERE conversation_id=${conversationId}) as A order by id DESC limit ${size} offset ${offset}`);
             socket.emit('loadmessage', ({
               rows : rows  
             }));
